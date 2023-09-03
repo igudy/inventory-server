@@ -4,9 +4,12 @@
   "description": "",
   "main": "server.js",
   "type": "module",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
-    "start": "node server",
-    "dev": "nodemon server"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "colors": "^1.4.0",
@@ -16,8 +19,8 @@
     "mongoose": "^5.12.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "nodemon": "^3.0.1"
   },
-  "author": "",
+  "author": "Igudy",
   "license": "ISC"
 }
