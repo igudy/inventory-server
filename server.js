@@ -1,11 +1,20 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import productSchema from "./models/productModel";
-productSchema;
-
+import connectDB from "./db/connect.js";
 const app = express();
 dotenv.config();
+
+// routes
+import productRouter from "./routes/productRouter.js";
+
+// router
+app.use("/api/v1/product", productRouter);
+
+// If route doesnt exist on server
+app.all("*", (req, res) => {
+  res.send("");
+});
 
 // Server homepage
 app.get("/", (req, res) => {

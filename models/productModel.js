@@ -1,9 +1,7 @@
 import mongoose from "mongoose";
 
-const schema = mongoose.schema;
-
 // Schema design - Name, Description, Price, CreatedAt and UpdatedAt
-const productSchema = new Schema({
+const productSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Please provide a name for this product"],
