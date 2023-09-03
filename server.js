@@ -6,7 +6,7 @@ const app = express();
 dotenv.config();
 
 // routes
-import productRouter from "./routes/productRouter.js";
+import productRouter from "./routes/v1/productRouter.js";
 
 // router
 app.use("/api/v1/product", productRouter);
