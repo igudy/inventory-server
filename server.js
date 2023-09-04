@@ -21,6 +21,9 @@ app.get("/", (req, res) => {
   res.send("<h1>Inventory API</h1>");
 });
 
+// product routes
+app.use("/api/v1/product", productRouter);
+
 // Port
 const port = process.env.PORT || 3001;
 
