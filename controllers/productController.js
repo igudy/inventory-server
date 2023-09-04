@@ -92,7 +92,7 @@ const bulkProductUpdate = async (req, res, next) => {
     res.status(200).json({
       status: "Success",
       message: "Multiple product update successful",
-      data: products, // Include the updated products in the response if needed
+      data: products,
     });
   } catch (error) {
     res.status(400).json({
@@ -130,7 +130,20 @@ const deleteProduct = async (req, res, next) => {
 // bulk-delete product
 const bulkProductDelete = async (req, res, next) => {
   try {
-  } catch (error) {}
+    const result = await Product.deleteMany({ _id: req.body.ids });
+    if (!result.deletedCount) {
+      res.status(400).json({
+        status: "Fail",
+        error: "Can't delete the product",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      status: "Fail",
+      message: "Product data delete failed",
+      error: error.message,
+    });
+  }
 };
 
 export {
