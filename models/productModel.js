@@ -29,4 +29,10 @@ const productSchema = new mongoose.Schema({
   },
 });
 
-export default productSchema;
+// Export the schema as well if needed
+export const ProductSchema = productSchema;
+
+// Create a model for the "product" collection
+const Product = mongoose.model("product", productSchema);
+
+export default Product;

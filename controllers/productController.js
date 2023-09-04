@@ -1,7 +1,4 @@
-import productSchema from "../models/productModel.js";
-import mongoose from "mongoose";
-
-const Product = mongoose.model("product", productSchema);
+import Product from "../models/productModel.js";
 
 // get all products
 const getAllProducts = async (req, res, next) => {
@@ -21,22 +18,34 @@ const getAllProducts = async (req, res, next) => {
   }
 };
 
-// add product
 const addProduct = async (req, res, next) => {
   try {
-    const product = new Product(req.body);
-    const result = await product.save();
-    res.status(200).json({
+    const result = await Product.create(req.body);
+    res.status(201).json({
       status: "success",
       message: "Data created",
       data: result,
     });
   } catch (error) {
-    res.status(400).json({
-      status: "Fail",
-      message: "Data is not inserted",
-      error: error.message,
-    });
+    if (error.name === "ValidationError") {
+      // Handle validation errors
+      const errors = {};
+      for (let field in error.errors) {
+        errors[field] = error.errors[field].message;
+      }
+      res.status(400).json({
+        status: "Fail",
+        message: "Validation errors",
+        errors,
+      });
+    } else {
+      // Handle other errors
+      res.status(500).json({
+        status: "Error",
+        message: "Internal server error",
+        error: error.message,
+      });
+    }
   }
 };
 
@@ -61,11 +70,9 @@ const getProduct = async (req, res, next) => {
 // updateProduct
 const updateProduct = async (req, res, next) => {
   try {
-    const result = await Product.updateOne(
-      { _id: req.params.id },
-      { data: req.body },
-      { runValidators: true }
-    );
+    const result = await Product.updateOne({ _id: req.params.id }, req.body, {
+      runValidators: true,
+    });
 
     res.status(200).json({
       status: "Success",
@@ -137,6 +144,11 @@ const bulkProductDelete = async (req, res, next) => {
         error: "Can't delete the product",
       });
     }
+    res.status(200).json({
+      status: "Success",
+      message: "Multiple product delete successful",
+      data: result,
+    });
   } catch (error) {
     res.status(400).json({
       status: "Fail",
@@ -147,11 +159,11 @@ const bulkProductDelete = async (req, res, next) => {
 };
 
 export {
-  addProduct,
   getAllProducts,
+  addProduct,
   getProduct,
   updateProduct,
   deleteProduct,
-  bulkProductDelete,
   bulkProductUpdate,
+  bulkProductDelete,
 };

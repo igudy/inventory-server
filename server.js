@@ -1,9 +1,12 @@
 import express from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import connectDB from "./db/connect.js";
+import cors from "cors";
 const app = express();
 dotenv.config();
+
+app.use(express.json());
+app.use(cors());
 
 // routes
 import productRouter from "./routes/v1/productRouter.js";
@@ -20,9 +23,6 @@ app.all("*", (req, res) => {
 app.get("/", (req, res) => {
   res.send("<h1>Inventory API</h1>");
 });
-
-// product routes
-app.use("/api/v1/product", productRouter);
 
 // Port
 const port = process.env.PORT || 3001;
