@@ -33,7 +33,7 @@ const addProduct = async (req, res, next) => {
     });
   } catch (error) {
     res.status(400).json({
-      status: "fail",
+      status: "Fail",
       message: "Data is not inserted",
       error: error.message,
     });
@@ -51,7 +51,7 @@ const getProduct = async (req, res, next) => {
     });
   } catch (error) {
     res.status(400).json({
-      status: "fail",
+      status: "Fail",
       message: "can't get the data",
       error: error.message,
     });
@@ -75,16 +75,32 @@ const updateProduct = async (req, res, next) => {
   } catch (error) {
     res.status(400).json({
       status: "Fail",
-      message: "Data update failed",
+      message: "Data update Failed",
       error: error.message,
     });
   }
 };
 
-// bulkProductUpdate
 const bulkProductUpdate = async (req, res, next) => {
   try {
-  } catch (error) {}
+    const products = [];
+    for (const product of req.body.ids) {
+      const result = await Product.updateOne({ _id: product.id }, product.data);
+      products.push(result);
+    }
+
+    res.status(200).json({
+      status: "Success",
+      message: "Multiple product update successful",
+      data: products, // Include the updated products in the response if needed
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Fail",
+      message: "Multiple product data update failed",
+      error: error.message,
+    });
+  }
 };
 
 // delete product
@@ -93,7 +109,7 @@ const deleteProduct = async (req, res, next) => {
     const result = await Product.deleteOne({ _id: req.params.id });
     if (!result.deletedCount) {
       res.status(400).json({
-        status: "fail",
+        status: "Fail",
         error: "Can't delete the product",
       });
     }
@@ -104,8 +120,8 @@ const deleteProduct = async (req, res, next) => {
     });
   } catch (error) {
     res.status(400).json({
-      status: "fail",
-      message: " product data delete failed",
+      status: "Fail",
+      message: "Product data delete Failed",
       error: error.message,
     });
   }
