@@ -40,4 +40,22 @@ const addProduct = async (req, res, next) => {
   }
 };
 
+// get Product
+const getProductById = async (req, res, next) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    res.status(200).json({
+      status: "success",
+      message: "Data found",
+      data: product,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: "can't get the data",
+      error: error.message,
+    });
+  }
+};
+
 export { addProduct, getAllProducts };
