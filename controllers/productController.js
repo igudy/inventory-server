@@ -41,7 +41,7 @@ const addProduct = async (req, res, next) => {
 };
 
 // get Product
-const getProductById = async (req, res, next) => {
+const getProduct = async (req, res, next) => {
   try {
     const product = await Product.findById(req.params.id);
     res.status(200).json({
@@ -58,4 +58,71 @@ const getProductById = async (req, res, next) => {
   }
 };
 
-export { addProduct, getAllProducts };
+// updateProduct
+const updateProduct = async (req, res, next) => {
+  try {
+    const result = await Product.updateOne(
+      { _id: req.params.id },
+      { data: req.body },
+      { runValidators: true }
+    );
+
+    res.status(200).json({
+      status: "Success",
+      message: "Product update successful",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Fail",
+      message: "Data update failed",
+      error: error.message,
+    });
+  }
+};
+
+// bulkProductUpdate
+const bulkProductUpdate = async (req, res, next) => {
+  try {
+  } catch (error) {}
+};
+
+// delete product
+const deleteProduct = async (req, res, next) => {
+  try {
+    const result = await Product.deleteOne({ _id: req.params.id });
+    if (!result.deletedCount) {
+      res.status(400).json({
+        status: "fail",
+        error: "Can't delete the product",
+      });
+    }
+    res.status(200).json({
+      status: "Success",
+      message: "Product deleted successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: " product data delete failed",
+      error: error.message,
+    });
+  }
+};
+
+// bulk-delete product
+const bulkProductDelete = async (req, res, next) => {
+  try {
+  } catch (error) {}
+};
+
+export {
+  addProduct,
+  getAllProducts,
+  getProduct,
+  updateProduct,
+  deleteProduct,
+  bulkProductDelete,
+  bulkProductUpdate,
+};
